@@ -6,6 +6,7 @@ namespace LabWork
     class QuadraticEquation
     {
         protected double b2, b1, b0; // Коефіцієнти рівняння
+
         public virtual void SetCoefficients()
         {
             Console.WriteLine("Введiть коефiцiєнти для квадратичного рiвняння:");
@@ -22,18 +23,24 @@ namespace LabWork
             Console.WriteLine($"Квадратичне рiвняння: {b2}x^2 + {b1}x + {b0} = 0");
         }
 
+        public virtual bool IsRoot(double x)
+        {
+            double result = b2 * x * x + b1 * x + b0;
+            return Math.Abs(result) < 1e-6;
+        }
+
         public virtual void FindRoots()
         {
             double discriminant = b1 * b1 - 4 * b2 * b0;
             if (discriminant > 0)
             {
-                double root1 = (-b1 + Math.Sqrt(discriminant)) / (2 * b2);
-                double root2 = (-b1 - Math.Sqrt(discriminant)) / (2 * b2);
+                double root1 = Math.Round((-b1 + Math.Sqrt(discriminant)) / (2 * b2), 2);
+                double root2 = Math.Round((-b1 - Math.Sqrt(discriminant)) / (2 * b2), 2);
                 Console.WriteLine($"Два коренi: x1 = {root1}, x2 = {root2}");
             }
             else if (Math.Abs(discriminant) < 1e-6)
             {
-                double root = -b1 / (2 * b2);
+                double root = Math.Round(-b1 / (2 * b2), 2);
                 Console.WriteLine($"Один корiнь: x = {root}");
             }
             else
@@ -64,6 +71,12 @@ namespace LabWork
         public override void PrintEquation()
         {
             Console.WriteLine($"Кубiчне рiвняння: {a3}x^3 + {b2}x^2 + {b1}x + {b0} = 0");
+        }
+
+        public override bool IsRoot(double x)
+        {
+            double result = a3 * x * x * x + b2 * x * x + b1 * x + b0;
+            return Math.Abs(result) < 1e-6;
         }
 
         public override void FindRoots()
@@ -99,10 +112,16 @@ namespace LabWork
                 return;
             }
 
-            // Динамічний виклик віртуальних методів
             equation.SetCoefficients();
             equation.PrintEquation();
             equation.FindRoots();
+
+            Console.Write("Введіть значення x для перевірки чи є воно коренем: ");
+            double x = Convert.ToDouble(Console.ReadLine());
+            bool isRoot = equation.IsRoot(x);
+            Console.WriteLine(isRoot
+                ? $"Число x = {x} є коренем рiвняння."
+                : $"Число x = {x} не є коренем рiвняння.");
         }
     }
 }
