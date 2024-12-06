@@ -97,4 +97,4 @@ class Program
         // Обчислюємо та виводимо площу
         Console.WriteLine($"Area: {shape.CalculateArea()}");
     }
-}
+} 
